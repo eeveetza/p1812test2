@@ -1,21 +1,52 @@
 # MATLAB/Octave Implementation of Recommendation ITU-R P.1812
 
-[![DOI](https://zenodo.org/badge/459641442.svg)](https://zenodo.org/badge/latestdoi/459641442)
+<!---[![DOI](https://zenodo.org/badge/459641442.svg)](https://zenodo.org/badge/latestdoi/459641442)
 
 This code repository contains a MATLAB/Octave software implementation of [Recommendation ITU-R P.1812-6](https://www.itu.int/rec/R-REC-P.1812/en) with a path-specific propagation prediction method for point-to-area terrestrial services in the frequency range 30 MHz to 6000 MHz.  
 
 This version of the code corresponds to the reference version  approved by ITU-R Working Party 3K and published on [ITU-R SG 3 Software, Data, and Validation Web Page](https://www.itu.int/en/ITU-R/study-groups/rsg3/Pages/iono-tropo-spheric.aspx).
+-->
+This development version of Recommendation ITU-R P.1812-6 implements the troposcatter model from PDR ITU-R P.617 (3M/106 Annex 7).
+
+This is development code that does not necessarily correspond to the reference version approved by ITU-R Working Party 3M and published by Study Group 3 on [ITU-R SG 3 Software, Data, and Validation Web Page](https://www.itu.int/en/ITU-R/study-groups/rsg3/Pages/iono-tropo-spheric.aspx).
 
 The following table describes the structure of the folder `./matlab/` containing the MATLAB/Octave implementation of Recommendation ITU-R P.1812.
 
 | File/Folder               | Description                                                         |
 |----------------------------|---------------------------------------------------------------------|
 |`tl_p1812.m`                | MATLAB function implementing Recommendation ITU-R P.1812-6          |
+|`initiate_digital_maps.m`| MATLAB script that processes the ITU-R maps and generates the necessary functions. It needs to be run prior to using this software implementation. For details, see [Integrating ITU Digital Products](#integrating-itu-digital-products). |
 |`validate_p1812.m`          | MATLAB script used to validate the implementation of Recommendation ITU-R P.1812-6 in `tl_p1812.m`             |
 |`./validation_profiles/`    | Folder containing a proposed set of terrain profiles and inputs for validation of MATLAB implementation (or any other software implementation) of this Recommendation |
 |`./validation_results/`	   | Folder containing all the results written during the transmission loss computations for the set of terrain profiles defined in the folder `./validation_profiles/` |
 |`./private/`   |             Folder containing the functions called by `tl_p1812.m` and `validate_p1812.m`|
+|`./C3_1_profiles/`   |             Folder containing terrain profiles and measurement files for Terrestrial trans-horizon links in DBSG3 (`CG-3M-2/DBSG3 Repository/Part II Terrestrial trans-horizon.../ III-01)`|
+|`read_C3_1_profile.m`   |             MATLAB script for reading the terrain profile|
+|`read_data_table_C3_1.m`   |             MATLAB script for reading the measurement data|
+|`compute_btl_table_C3_1.m`   |             MATLAB script for computing the basic transmission loss according to ITU-R P.1812-6 and the PDR on troposcatter for those paths from table C3_1 which have complete set of input parameters and computes the prediction errors of the two approaches in an Excel file `Results_Table_C3_1_P1812.xls`|
 
+## Integrating ITU Digital Products
+
+This software uses ITU digital products that are integral part of Recommendations. These products must not be reproduced or distributed without explicit written permission from the ITU.
+
+### Setup Instructions
+
+1. **Download and extract the required maps** to `./private/maps`:
+
+   - From ITU-R P.452-18:
+     - `N050.TXT`
+     - `DN50.TXT`
+   - From ITU-R P.2001-4:
+     - `TropoClim.txt`
+
+2. **Run the script** `initiate_digital_maps.m` to generate the necessary functions for retrieving and interpolating data from from the maps.
+
+### Notes
+
+- Ensure all files are placed in `./private/maps` before running the script.
+- The script processes the maps, which are critical for the software’s functionality.
+- The resulting `*.m` files are placed in the folder `./private`.
+<!--
 ## Function Call
 
 The function `tl_p1812` can be called
@@ -79,11 +110,10 @@ Instead of Tx/Rx latitudes and longitudes (`phi_t`, `phi_r`, `lam_t`, `lam_r`), 
 |------------|--------|-------|-------------|
 | `Lb`    | double | dB    | Basic transmission loss |
 | `Ep`    | double | dB(uV/m)    | Electric field strength |
-
+-->
 ## Software Versions
 The code was tested and runs on:
-* MATLAB versions 2017a and 2020a
-* Octave version 6.1.0
+* MATLAB versions 2022a (Windows OS)
 
 ## References
 
